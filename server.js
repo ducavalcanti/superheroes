@@ -6,3 +6,5 @@ var port = process.env.PORT || 3000;
 var server = app.listen(port, function() {
     console.log('Super Hero Catalogue RESTful API server started on port: ' + port);
 });
+
+var teste = teste;
