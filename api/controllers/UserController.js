@@ -1,7 +1,15 @@
 var User = require('../models/User');
+var bcrypt = require('bcryptjs');
 
 exports.createUser = function(request, response){
-    var newUser = new User(request.body);
+    var hashedPassword = bcrypt.hashSync(request.body.password, 8);
+    var newUser = new User(
+        {
+            username: request.body.username,
+            password: hashedPassword,
+        }
+    );
+    
     newUser.save(function (error, user){
         if (error)
             response.send(error);
