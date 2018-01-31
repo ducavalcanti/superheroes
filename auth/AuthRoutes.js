@@ -1,14 +1,9 @@
 'use strict';
 
-var validateToken = require('./ValidateToken');
-
-module.exports = function(app){
+module.exports = function(router){
     var AuthController = require('./AuthController');
 
-    app.post('/auth/login', AuthController.login);
-
-    app.get('/auth/me', validateToken, AuthController.getToken);
-
-    // app.post('/role/:username/:role', validateToken, AuthController.addRole);
+    router.post('/auth/login', AuthController.login);
+    router.get('/auth/me', AuthController.getToken);
 };
 

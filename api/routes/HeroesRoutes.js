@@ -1,14 +1,12 @@
 'use strict';
 
-module.exports = function(app){
+module.exports = function(router){
     var heroesController = require('../controllers/HeroesController');
 
-    app.route('/heroes')
-        .get(heroesController.listHeroes)
-        .post(heroesController.createHero);
-
-    app.route('/heroes/:id')
-        .get(heroesController.getHero)
-        .put(heroesController.updateHero)
-        .delete(heroesController.deleteHero);
+    router.get('/heroes', heroesController.listHeroes)
+    router.post('/heroes', heroesController.createHero)
+        
+    router.get('/heroes/:id', heroesController.getHero)
+    router.put('/heroes/:id', heroesController.updateHero)
+    router.delete('/heroes/:id', heroesController.deleteHero);
 };

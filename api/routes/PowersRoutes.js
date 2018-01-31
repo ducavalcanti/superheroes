@@ -1,14 +1,12 @@
 'use strict';
 
-module.exports = function(app){
+module.exports = function(router){
     var PowersController = require('../controllers/PowersController');
 
-    app.route('/powers')
-        .get(PowersController.listPowers)
-        .post(PowersController.createPower);
+    router.get('/powers', PowersController.listPowers);
+    router.post('/powers', PowersController.createPower);
 
-    app.route('/powers/:powerId')
-        .get(PowersController.getPower)
-        .put(PowersController.updatePower)
-        .delete(PowersController.deletePower);
+    router.get('/powers/:powerId', PowersController.getPower);
+    router.put('/powers/:powerId', PowersController.updatePower);
+    router.delete('/powers/:powerId', PowersController.deletePower);        
 };

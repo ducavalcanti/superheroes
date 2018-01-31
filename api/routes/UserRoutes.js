@@ -1,14 +1,14 @@
 'use strict';
 
-module.exports = function(app){
+// var validateToken = require('../../auth/ValidateToken');
+
+module.exports = function(router){
     var usersController = require('../controllers/UserController');
 
-    app.route('/users')
-        .get(usersController.listUsers)
-        .post(usersController.createUser);
+    router.get('/users', usersController.listUsers);
+    router.post('/users', usersController.createUser);
 
-    app.route('/users/:id')
-        .get(usersController.getUser)
-        .put(usersController.updateUser)
-        .delete(usersController.deleteUser);
+    router.get('/users/:username', usersController.getUser);
+    router.put('/users/:username', usersController.updateUser);
+    router.delete('/users/:username', usersController.deleteUser);
 };

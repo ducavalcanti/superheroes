@@ -5,7 +5,7 @@ var bcrypt = require('bcryptjs');
 var config = require('../config');
 
 exports.getToken = function(request, response, next) {
-    User.findById(request.userId, { password: 0 }, function(error, user){
+    User.findById(request.decoded.id, { password: 0 }, function(error, user){
       if (error)
         return response.status(500).send('Problem trying to find user');
       if (!user)
@@ -38,6 +38,6 @@ exports.login = function(request, response) {
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: expiresIn
     });
-    response.status(200).send({ auth: true, token: token, expiresIn: expiresIn});    
+    response.status(200).send({ auth: true, token: token, expiresIn: expiresIn}); 
   });
 }
