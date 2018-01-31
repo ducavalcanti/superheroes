@@ -9,6 +9,6 @@ module.exports = function(app){
 
     app.get('/auth/me', validateToken, AuthController.getToken);
 
-    app.post('/role/:username/:role', validateToken, AuthController.addRole);
+    // app.post('/role/:username/:role', validateToken, AuthController.addRole);
 };
 
