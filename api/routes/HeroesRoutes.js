@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app){
-    var heroesController = require('../controllers/heroesController');
+    var heroesController = require('../controllers/HeroesController');
 
     app.route('/heroes')
         .get(heroesController.listHeroes)
