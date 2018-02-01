@@ -1,17 +1,13 @@
 var User = require('../api/models/User');
-var acl = require('../db');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var config = require('../config');
 
-exports.getToken = function(request, response, next) {
-    User.findById(request.decoded.id, { password: 0 }, function(error, user){
-      if (error)
-        return response.status(500).send('Problem trying to find user');
-      if (!user)
-        return response.status(404).send('Couldn\'t find user');
-      response.status(200).send(user);        
-    });
+exports.getUserId = function(request, response, next) {
+  if (request.decoded){
+    return request.decoded.id;
+  }
+  return false;
 }
 
 exports.login = function(request, response) {
