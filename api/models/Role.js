@@ -7,8 +7,8 @@ var RoleSchema = new Schema({
     name: {
         type: String,
         unique: true,
-        required: 'Username is required'
-    }   
+        required: 'Role name is required',
+    },
 }, 
     { collection: 'roles' }
 );

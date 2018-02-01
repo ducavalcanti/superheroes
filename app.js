@@ -3,6 +3,8 @@
 var express = require('express');
 var app = express();
 var tokenValidator = require('./aaa/ValidateToken');
+var authorize = require('./aaa/AuthorizationMiddleware');
+// var authorizationController = require('./aaa/AuthorizationController');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -10,39 +12,17 @@ app.use(bodyParser.json());
 
 // Setup database
 var mongoose = require('mongoose');
-var nodeAcl = require('acl');
-var acl;
-
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/superheroes', setupAuthorization);
 
 // Authorization callback
 function setupAuthorization(error, db){
-    var mongoBackend = new nodeAcl.mongodbBackend(db);
-    acl = new nodeAcl(mongoBackend, logger());
-
     setupRoles();
     setupRoutes();
 }
 
 function setupRoles(){
-    // ACL Rules
-    acl.allow([
-        {
-            roles: 'admin',
-            allows: [
-                {resources: ['users', 'powers', 'heroes', 'auth', 'roles'], permissions: '*'}
-            ]
-        },
-        {
-            roles: 'standard',
-            allows: [
-                {resources: ['heroes', 'powers'], permissions: 'get'},
-                {resources: ['auth'], permissions: ['get', 'post']}
-            ]
-        },
-    ]);
-    acl.addRoleParents( 'admin', 'standard' );
+    // Roles
 }
 
 function setupRoutes(){
@@ -52,12 +32,14 @@ function setupRoutes(){
     var userRoutes = require('./api/routes/UserRoutes');
     var heroRoutes = require('./api/routes/HeroesRoutes');
     var powerRoutes = require('./api/routes/PowersRoutes');
+    var rolesRoutes = require('./api/routes/RolesRoutes');
 
     authRoutes(routes);
     routes.use(tokenValidator);
-    userRoutes(routes, acl);
+    userRoutes(routes, authorize);
     heroRoutes(routes);
-    powerRoutes(routes); 
+    powerRoutes(routes);
+    rolesRoutes(routes); 
 
     app.use('/', routes);
 }

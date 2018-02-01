@@ -28,7 +28,7 @@ exports.getHero = function(request, response){
 }
 
 exports.updateHero = function(request, response){
-    Hero.findOneAndUpdate({_id: request.params.id}, request.body, {new: false}, function(error, hero){
+    Hero.findOneAndUpdate({_id: request.params.id}, request.body, {new: true}, function(error, hero){
         if (error)
             response.send(error)
         response.json(hero);

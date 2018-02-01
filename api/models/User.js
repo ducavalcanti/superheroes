@@ -13,9 +13,9 @@ var UserSchema = new Schema({
         type: String,
         required: 'Password is required'
     },
-    role: {
-        type: String
-    }
+    roles: [{
+        type: Schema.ObjectId, ref: 'Role'
+    }] 
 }, 
     { collection: 'users' }
 );
