@@ -10,24 +10,23 @@ exports.listPowers = function(request, response){
 }
 
 exports.createPower = function(request, response){
-    if (!request.body.heroId)
-        return response.status(500).send('heroId is required.');
-    var heroId = request.body.heroId;
-    var newPower;
-    var hero = Hero.findById(heroId, function(error, hero){
-        newPower = new Power(request.body);
-        newPower.save(function(error, power){
+    if (!request.params.heroId)
+        response.status(500).send('heroId is required.');
+    else {
+        var powerObject = {name: request.body.name, description: request.body.description};
+        var powerModel = new Power(powerObject);
+        powerModel.save(function(error, power){
             if (error)
                 return response.send(error);
         });
-    });
-    
-    hero.powers.push(newPower);
-    hero.save(function(error, hero){
-        if (error)
-            return response.status(500).send(error);
-    });
-    return response.json(power);
+
+        Hero.findByIdAndUpdate(request.params.heroId, {$push: {powers: powerObject}}, {safe: true, upsert: true}, function(error, hero){
+            if (error)
+                return response.status(500).send(error);
+            else
+                return response.status(404).json({'message': 'Could not create power. Hero with this heroId not found.'});
+        });
+    }
 }
 
 exports.getPower = function(request, response){

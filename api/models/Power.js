@@ -11,7 +11,7 @@ var PowerSchema = new Schema({
     description: {
         type: String,
         required: 'Description is required'
-    },
+    }
 },
     {collection: 'powers'}
 );

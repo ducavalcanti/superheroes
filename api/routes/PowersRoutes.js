@@ -4,7 +4,7 @@ module.exports = function(router){
     var PowersController = require('../controllers/PowersController');
 
     router.get('/powers', PowersController.listPowers);
-    router.post('/powers', PowersController.createPower);
+    router.post('/powers/:heroId', PowersController.createPower);
 
     router.get('/powers/:powerId', PowersController.getPower);
     router.put('/powers/:powerId', PowersController.updatePower);
