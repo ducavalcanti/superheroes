@@ -8,5 +8,5 @@ module.exports = function(router){
 
     router.get('/powers/:powerId', PowersController.getPower);
     router.put('/powers/:powerId', PowersController.updatePower);
-    router.delete('/powers/:powerId', PowersController.deletePower);        
+    // router.delete('/powers/:powerId', PowersController.deletePower);        
 };

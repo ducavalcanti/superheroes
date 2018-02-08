@@ -1,9 +1,31 @@
 'use strict';
 
 var Hero = require('../models/Hero');
+var pageNum = 0;
+var pageSize = 10;
 
 exports.listHeroes = function(request, response){
-    Hero.find({}, function(error, heroes){
+
+    // Validates if page param exists. If so, assign it later
+    // TODO: validate if param is a number (integer)
+    var pg = request.params.pageNumber;
+    if (pg){
+        pageNum = parseInt(pg, 10);
+    }
+    
+    // Validates if perPage param exists. If so, assign it later
+    // TODO: validate if param is a number (integer)
+    var pp = request.params.pageSize;
+    if (pp){
+        pageSize = parseInt(pp, 10);
+    }
+
+    Hero.find({})
+        .limit(pageSize)
+        .skip(pageSize * pageNum)
+        .sort({name: 'asc'})
+        .populate('powers')
+        .exec(function(error, heroes){
         if (error)
             response.send(error);
         response.json(heroes);
@@ -20,10 +42,12 @@ exports.createHero = function(request, response){
 }
 
 exports.getHero = function(request, response){
-    Hero.findById(request.params.id, function(error, hero){
-        if (error)
-            response.send(error)
-        response.json(hero);
+    Hero.findOne({_id: request.params.id}).populate('powers').exec(function(error, hero){
+        if (error){
+            response.send(error);
+        } else {
+            response.json(hero);
+        }
     });
 }
 

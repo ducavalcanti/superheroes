@@ -15,7 +15,7 @@ var HeroSchema = new Schema({
     },
     powers: [{
         type: Schema.ObjectId, ref: 'Power'
-    }] 
+    }]
 }, 
 {
     collection: 'heroes'

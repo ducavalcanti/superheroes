@@ -17,9 +17,11 @@ module.exports = function(action){
                 }
             });
         } else {
-        return response.status(401).json({result: 'Token not found'});
+            response.status(401).json({result: 'Token not found'});
+            response.end();
         }
-    }
+        next();
+    }    
 } 
 
 function checkPermission(role, section, action){
