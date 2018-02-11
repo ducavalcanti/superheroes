@@ -55,7 +55,11 @@ exports.getHero = function(request, response){
         if (error){
             response.status(500).send(error);
         } else {
-            response.status(200).json(hero);
+            if (hero){
+                response.status(200).json(hero);
+            } else {
+                response.status(404).json({result: 'Hero not found.'});
+            }            
         }
         response.end();
     });

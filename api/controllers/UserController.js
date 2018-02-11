@@ -8,7 +8,7 @@ var aeController = require('../controllers/AuditEventsController');
 exports.createFirstUser = function(request, response){
     User.findOne({username: 'admin'}, function(error, user){
         if (user){
-            return response.status(500).send('User admin was already created.');
+            return response.status(500).json({result: 'User admin was already created.'});
         } else {
             var standardRole = new Role({name: 'standard'});                    
             standardRole.save(function(error, role){
@@ -63,7 +63,7 @@ exports.createUser = function(request, response){
                 response.end();        
             });
         } else {
-            response.status(404).send('Could not find standard role to assign to this new user profile. Use /setup first.');            
+            response.status(404).json({result: 'Could not find standard role to assign to this new user profile. Use /setup first.'});            
         }        
     });
 };
@@ -87,7 +87,7 @@ exports.getUser = function(request, response){
             response.status(500).send(error);
         } else {
             if (!user){
-                response.status(404).send("User not found.");
+                response.status(404).json({result: 'User not found.'});
             } else {                
                 response.status(200).json(user);
             }
@@ -103,7 +103,7 @@ exports.deleteUser = function(request, response){
             response.status(500).send(error);
         } else {
             if (!user){
-                response.status(404).send("User doesn't exist.")
+                response.status(404).json({result: "User not found."})
             } else {
                 aeController.createEvent(request, 'User', user.id, 'delete');
                 response.status(200).json(user);
@@ -120,8 +120,12 @@ exports.updateUser = function(request, response){ // Try changing to 'patch' lat
         if (error){
             response.status(500).send(error);
         } else {
-            aeController.createEvent(request, 'User', user.id, 'update');
-            response.status(200).json(user);
+            if (user){
+                aeController.createEvent(request, 'User', user.id, 'update');
+                response.status(200).json(user);
+            } else {
+                response.status(404).json({result: 'User not found.'});
+            }
         }
     });
 };

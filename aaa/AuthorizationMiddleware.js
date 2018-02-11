@@ -55,7 +55,7 @@ function checkPermission(role, section, action){
                     if (['read'].indexOf(action) >= 0){
                         return true;
                     }
-                    break;
+                    break;                
             }            
     }
     return false;
