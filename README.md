@@ -24,7 +24,7 @@ Here are described all endpoints according to users manipulation.
 This endpoint is used to create the first user (admin) in the database;
 
 ### Create User (POST /users):
-Creates a new user with the **standard** role. Requires authentication.
+Creates a new user with the **standard** role. Requires [Authentication](#authentication).
 
 The following body keys are required:
 * username
@@ -38,11 +38,11 @@ Optionally, you can set the following headers:
 * **pageSize**: the number of records per page (default: _10_);
 
 ### Get Single User (GET /users/:username):
-Gets a single user from the database. Requires authentication.
+Gets a single user from the database. Requires [Authentication](#authentication).
 Replace the URL param **:username** by the username of the desired user.
 
 ### Update User (PUT /users/:username):
-Updates a single user from the database. Requires authentication.
+Updates a single user from the database. Requires [Authentication](#authentication).
 Replace the URL param **:username** by the username of the desired user.
 
 The following body keys are accepted:
@@ -50,32 +50,32 @@ The following body keys are accepted:
 * password
 
 ### Delete User (DELETE /users/:username):
-Deletes a single user from the database. Requires authentication.
+Deletes a single user from the database. Requires [Authentication](#authentication).
 Replace the URL param **:username** by the username of the desired user.
 
 ## Super Heroes
 Here are described all endpoints according to Super Heroes manipulation.
 
 ### Create Super Hero (**POST** /heroes):
-Creates a single super hero. Requires authentication.
+Creates a single super hero. Requires [Authentication](#authentication).
 
 The following body keys are required:
 * name: The hero's name (ex. Superman);
 * alias: The hero's common name (ex. Clark Kent);
 
 ### List Super Heroes (GET /heroes):
-Retrieves a list of super heroes. Requires authentication.
+Retrieves a list of super heroes. Requires [Authentication](#authentication).
 
 Optionally, you can set the following headers:
 * **pageNum**: the number of the page (default: _0_);
 * **pageSize**: the number of records per page (default: _10_);
 
 ### Get Single Super Hero (GET /heroes/:heroId):
-Gets a single super hero from the database. Requires authentication.
+Gets a single super hero from the database. Requires [Authentication](#authentication).
 Replace the URL param **:heroId** by the id of the desired hero.
 
 ### Update Super Hero (PUT /heroes/:heroId):
-Updates a single super hero from the database. Requires authentication.
+Updates a single super hero from the database. Requires [Authentication](#authentication).
 Replace the URL param **:heroId** by the id of the desired hero.
 
 The following body keys are accepted:
@@ -83,11 +83,11 @@ The following body keys are accepted:
 * alias
 
 ### Delete Super Hero (DEL /heroes/:heroId):
-Deletes a single super hero and - all powers associated - from the database. Requires authentication.
+Deletes a single super hero and - all powers associated - from the database. Requires [Authentication](#authentication).
 Replace the URL param **:heroId** by the id of the desired hero.
 
 ### Set Protection Area (POST /heroes/:heroId/area):
-Creates and assigns a protection area to a single super hero. Requires authentication.
+Creates and assigns a protection area to a single super hero. Requires [Authentication](#authentication).
 Replace the URL param **:heroId** by the id of the desired hero.
 
 The following body keys are required:
@@ -100,7 +100,7 @@ The following body keys are required:
 Here are described all endpoints according to Super Heroes manipulation.
 
 ### Create Super Power (POST /powers/:heroId):
-Creates a single super power and associate it to hero. Requires authentication.
+Creates a single super power and associate it to hero. Requires [Authentication](#authentication).
 Replace the URL param **:heroId** by the id of the desired hero.
 
 The following body keys are required:
@@ -115,11 +115,11 @@ Optionally, you can set the following headers:
 * **pageSize**: the number of records per page (default: _10_);
 
 ### Get Single Super Power (GET /powers/:powerId):
-Gets a single super power from the database. Requires authentication.
+Gets a single super power from the database. Requires [Authentication](#authentication).
 Replace the URL param **:powerId** by the id of the desired power.
 
 ### Update Super Power (PUT /powers/:powerId):
-Updates a single super power from the database. Requires authentication.
+Updates a single super power from the database. Requires [Authentication](#authentication).
 Replace the URL param **:powerId** by the id of the desired power.
 
 The following body keys are accepted:
@@ -139,5 +139,5 @@ Users can visualize the audit events being generated in real time by accessing t
 There are two roles at this moment: 'admin' and 'standard'.
 
 ### List Roles By User (GET /roles/:username):
-This endpoint lists the set of roles of a single user.
+This endpoint lists the set of roles of a single user. Requires [Authentication](#authentication).
 Replace the URL param **:username** by the username of the desired user.
