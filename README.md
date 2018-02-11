@@ -8,7 +8,7 @@ All endpoints must set the header:
 * **Content-Type**: **application/x-www-form-urlencoded**
 
 ## Authentication
-The authentication process is done through here. All endpoints (except this one) have to set the **x-access-token** header (which value is the token provided by the Login User endpoint - if logged in successfully).
+The authentication process is done here. All endpoints (except this one) have to set the **x-access-token** header (which value is the token provided by the Login User endpoint - if logged in successfully).
 
 ### Login User (POST /auth/login):
 Used to log in a user. Returns a token used to authenticate in the majority of endpoints.

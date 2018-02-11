@@ -16,7 +16,7 @@
         <script>
             var socket = io();
             socket.on('auditEvent', function(msg){
-                $('#events').append($('<li>').html('<b>' + msg.action.toUpperCase() + '</b> Event: ' + 
+                $('#events').append($('<li>').html('<b>' + msg.entityType.toUpperCase() + ' ' + msg.action.toUpperCase() + '</b> Event: ' + 
                     ' <b>Id:</b> ' + msg.auditId +
                     ' - <b>entityId</b>: ' + msg.entityId +
                     ' - <b>entityType:</b> ' + msg.entityType + 
