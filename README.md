@@ -1,11 +1,11 @@
 # Super Hero Catalogue - A RESTFul API
 This project is an example of RESTful API using Node.js.
 
-# Endpoints
-Here are listed all the endpoints of this API.
-All endpoints must set the header Content-Type with value 'application/x-www-form-urlencoded'.
+## Endpoints
+This README.md file lists all the endpoints of this API.
 
-All endpoints are listing the required keys that should be sent within the request body.
+All endpoints must set the header: 
+* **Content-Type**: **application/x-www-form-urlencoded**
 
 ## Authentication
 The authentication process is done through here. All endpoints (except this one) have to set the **x-access-token** header (which value is the token provided by the Login User endpoint - if logged in successfully).
