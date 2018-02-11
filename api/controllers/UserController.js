@@ -2,8 +2,9 @@ var User = require('../models/User');
 var Role = require('../models/Role');
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
-var ac = require('../../aaa/AuthorizationController');
+var aeController = require('../controllers/AuditEventsController');
 
+/** Creates the first API user */
 exports.createFirstUser = function(request, response){
     User.findOne({username: 'admin'}, function(error, user){
         if (user){
@@ -39,71 +40,88 @@ exports.createFirstUser = function(request, response){
     });
 };
 
+/** Creates a single user and assigns the role 'standard' to him */
 exports.createUser = function(request, response){
     var hashedPassword = bcrypt.hashSync(request.body.password, 8);
-    var role = Role.findOne({name: 'standard'}, function (error, role){
-        return response.status(404).send('Could not find standard role to assign to this new user profile. Use /setup first.');
-    });
-    
-    var user = new User(
-        {
-            username: request.body.username,
-            password: hashedPassword,
-        }
-    );
-
-    user.roles.push(role);
-    user.save(function (error, user){
-        if (error)
-            return response.send(error);
-        return response.send(user);
+    Role.findOne({name: 'standard'}, function (error, role){
+        if (role){
+            var user = new User(
+                {
+                    username: request.body.username,
+                    password: hashedPassword,
+                }
+            );
+        
+            user.roles.push(role);
+            user.save(function (error, user){
+                if (error){
+                    response.status(500).send(error);
+                } else {
+                    aeController.createEvent(request, 'User', user.id, 'create');
+                    response.status(200).send(user);
+                }
+                response.end();        
+            });
+        } else {
+            response.status(404).send('Could not find standard role to assign to this new user profile. Use /setup first.');            
+        }        
     });
 };
 
+/** Lists all users */
 exports.listUsers = function(request, response){
     User.find({}, function(error, users){
-        if (error)
-            return response.send(error);
-        return response.send(users);
+        if (error){
+            response.status(500).send(error);
+        } else {
+            response.status(200).send(users);
+        }
+        response.end();        
     });
 };
 
-
+/** Gets a single user */
 exports.getUser = function(request, response){
     User.findOne({username: request.params.username}, function (error, user){
-        if (error)
-            return response.send(error);
-        if (!user)
-            return response.send("User not found.");
-        else
-            return response.json(user);
+        if (error){
+            response.status(500).send(error);
+        } else {
+            if (!user){
+                response.status(404).send("User not found.");
+            } else {                
+                response.status(200).json(user);
+            }
+        }
+        response.end();
     });
 };
 
+/** Deletes a single user */
 exports.deleteUser = function(request, response){
     User.findOneAndRemove({username: request.params.username}, function(error, user){
-        if (error)
-            return response.send(error)
-        if (!user)
-            return response.send("User doesn't exist.")
-        else
-            return response.json(user);        
+        if (error){
+            response.status(500).send(error);
+        } else {
+            if (!user){
+                response.status(404).send("User doesn't exist.")
+            } else {
+                aeController.createEvent(request, 'User', user.id, 'delete');
+                response.status(200).json(user);
+            }
+        }            
     });
 };
 
+
+/** Updates a single user */
 exports.updateUser = function(request, response){ // Try changing to 'patch' latter on
     request.body.password = bcrypt.hashSync(request.body.password, 8);
     User.findOneAndUpdate({username: request.params.username}, request.body, {new: true}, function(error, user){
-        if (error)
-            return response.send(error)
-        return response.json(user)
+        if (error){
+            response.status(500).send(error);
+        } else {
+            aeController.createEvent(request, 'User', user.id, 'update');
+            response.status(200).json(user);
+        }
     });
 };
-
-exports.checkRoles = function(request, response){
-    User.findOne({username: request.params.username}).populate('roles').exec(function(error, user){
-        if (error)
-            return response.status(500).send(error);
-        return response.status(200).json(user.roles);
-    });
-}

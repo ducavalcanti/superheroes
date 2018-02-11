@@ -1,12 +1,17 @@
-'use strict';
+/** 
+ * The AuditEvent model
+*/
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/** 
+ * AuditEventSchema
+ * @constructor AuditEvent
+ */
 var AuditEventSchema = new Schema({
     entity: {
         type: String,
-        required: 'Entity is required',
-        unique: true
+        required: 'Entity is required'
     },
     entityId: {
         type: String,
@@ -29,4 +34,10 @@ var AuditEventSchema = new Schema({
     collection: 'events'
 });
 
+/** Hooks to the post (save) and emits to clients */
+AuditEventSchema.post('save', function (event) {
+    AuditEventSchema.emit('newEvent', event);
+});
+
 module.exports = mongoose.model('AuditEvent', AuditEventSchema);
+

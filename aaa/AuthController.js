@@ -3,6 +3,8 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var config = require('../config');
 
+
+/** Returns the id of an authenticated user */
 exports.getUserId = function(request, response, next) {
   if (request.decoded){
     return request.decoded.id;
@@ -10,6 +12,7 @@ exports.getUserId = function(request, response, next) {
   return false;
 }
 
+/** Logs in the user by providing an username and password */
 exports.login = function(request, response) {
   var username = request.body.username;
   var password = request.body.password;

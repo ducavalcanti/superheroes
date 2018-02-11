@@ -3,8 +3,6 @@
 var express = require('express');
 var app = express();
 var tokenValidator = require('./aaa/ValidateToken');
-var authorize = require('./aaa/AuthorizationMiddleware');
-// var authorizationController = require('./aaa/AuthorizationController');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -17,12 +15,11 @@ mongoose.connect('mongodb://localhost/superheroes', setupAuthorization);
 
 // Authorization callback
 function setupAuthorization(error, db){
-    setupRoles();
     setupRoutes();
 }
 
-function setupRoles(){
-    // Roles
+function setupAudit(){
+    require('./api/controllers/AuditEventsController');
 }
 
 function setupRoutes(){
@@ -33,15 +30,19 @@ function setupRoutes(){
     var heroRoutes = require('./api/routes/HeroesRoutes');
     var powerRoutes = require('./api/routes/PowersRoutes');
     var rolesRoutes = require('./api/routes/RolesRoutes');
+    var auditRoutes = require('./api/routes/AuditEventsRoutes');
 
     authRoutes(routes);
     routes.use(tokenValidator);
-    userRoutes(routes, authorize);
+    userRoutes(routes);
     heroRoutes(routes);
     powerRoutes(routes);
     rolesRoutes(routes); 
+    auditRoutes(routes);
 
     app.use('/', routes);
+
+    setupAudit();
 }
 
 // Generic debug logger for node_acl

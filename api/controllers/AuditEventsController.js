@@ -1,12 +1,35 @@
-'use strict';
+var mongoose = require('mongoose');
+var AuditEvent = require('../models/AuditEvent');
+var User = mongoose.model('User');
 
-var Hero = require('../models/AuditEvent');
+/** Function used to register an audit event in the database 
+ * @param {string} entitiType - Represents the type of the entity ('Hero', 'Power', etc.)
+ * @param {string} entityId - The id of the entity that is being changed
+ * @param {string} action - The action being done to the entity ('create', 'delete' or 'update')
+*/
+exports.createEvent = function(request, entityType, entityId, action){
+    User.findById(request.decoded.id, function(error, user){
+        var aEvent = new AuditEvent({
+            entity: entityType,
+            entityId: entityId,
+            username: user.username,
+            action: action
+        });
+        
+        aEvent.save(function(error, ae){
+            if (error){
+                console.log('Could not save audit event.');
+            } else {
+                console.log('AuditEvent registered successfully. User: ' 
+                + user.username + ' - EntityType: ' + entityType + ' - EntityId: ' + entityId + ' - Action: ' + action);                
+            }
+        });
+    });
+}
 
-exports.createEvent = function(request, response){
-    var newHero = new Hero(request.body);
-    newHero.save(function(error, hero){
-        if (error)
-            response.send(error);
-        response.json(hero);
+/** Function used to register clients and notify them of new audit events */
+exports.eventStream = function(request, response){
+    AuditEvent.schema.on('newEvent',function(event){
+        response.push(event);
     });
 }

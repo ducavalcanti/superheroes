@@ -1,8 +1,40 @@
-'use strict';
+/**
+ * The Super Hero Model
+ */
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/**
+ * ProtectionArea Schema
+ * @constructor ProtectionArea
+ */
+var ProtectionAreaSchema = new Schema({
+    name: {
+        type: String,
+        unique: true,
+        required: 'Name is required'
+    },
+    lat: {
+        type: Number,
+        required: 'Latitude is required'
+    },
+    long: {
+        type: Number,
+        required: 'Longitude is required'
+    },
+    radius: {
+        type: Number,
+        required: 'Radius is required'
+    }
+});
+
+mongoose.model('ProtectionArea', ProtectionAreaSchema);
+
+/**
+ * Super Hero Schema
+ * @constructor Hero
+ */
 var HeroSchema = new Schema({
     name: {
         type: String,
@@ -15,7 +47,8 @@ var HeroSchema = new Schema({
     },
     powers: [{
         type: Schema.ObjectId, ref: 'Power'
-    }]
+    }],
+    protectionArea: {type: Schema.ObjectId, ref: 'ProtectionArea'}
 }, 
 {
     collection: 'heroes'

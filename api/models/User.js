@@ -1,8 +1,13 @@
-'use strict';
-
+/**
+ * User model
+ */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/**
+ * User schema
+ * @constructor User
+ */
 var UserSchema = new Schema({
     username: {
         type: String,
