@@ -1,16 +1,34 @@
 <html>
     <head>
         <title>Super Hero Catalogue - Audit Events</title>
+        <style>
+            body {
+                font-family: 'Roboto Slab', sans-serif;
+                margin: 20px;
+            }
+            ul {
+                list-style-type: none;
+            }
+        </style>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io();
             socket.on('auditEvent', function(msg){
-                $('#events').append($('<li>').text('New Audit Event: ' + JSON.stringify(msg)));
+                $('#events').append($('<li>').html('<b>' + msg.action.toUpperCase() + '</b> Event: ' + 
+                    ' <b>Id:</b> ' + msg.auditId +
+                    ' - <b>entityId</b>: ' + msg.entityId +
+                    ' - <b>entityType:</b> ' + msg.entityType + 
+                    ' - <b>user:</b> ' + msg.user +
+                    ' - <b>timestamp:</b> ' + msg.datetime
+                ));
             });
         </script>
     </head>
-    <body> 
-        <ul id="events"></ul>
+    <body>
+        <h3>Super Hero Catalogue - Audit Events</h3>
+        <h4>Events list:</h6>
+        <ol id="events"></ol>
     </body>
 </html>

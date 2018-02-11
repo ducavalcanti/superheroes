@@ -19,7 +19,8 @@ io.on('connection', function(socket){
             user: event.username,
             entityType: event.entity,
             entityId: event.entityId,
-            action: event.action
+            action: event.action,
+            datetime: event.datetime
         }
         socket.emit('auditEvent', json);
     });

@@ -3,6 +3,8 @@ var Role = require('../models/Role');
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
 var aeController = require('../controllers/AuditEventsController');
+var pageNum = 0;
+var pageSize = 10;
 
 /** Creates the first API user */
 exports.createFirstUser = function(request, response){
@@ -70,14 +72,32 @@ exports.createUser = function(request, response){
 
 /** Lists all users */
 exports.listUsers = function(request, response){
-    User.find({}, function(error, users){
-        if (error){
-            response.status(500).send(error);
-        } else {
-            response.status(200).send(users);
-        }
-        response.end();        
-    });
+    // Validates if page param exists. If so, assign it later
+    // TODO: validate if param is a number (integer)
+    var pg = request.params.pageNumber;
+    if (pg){
+        pageNum = parseInt(pg, 10);
+    }
+    
+    // Validates if perPage param exists. If so, assign it later
+    // TODO: validate if param is a number (integer)
+    var pp = request.params.pageSize;
+    if (pp){
+        pageSize = parseInt(pp, 10);
+    }
+    
+    User.find({})
+        .limit(pageSize)
+        .skip(pageSize * pageNum)
+        .sort({name: 'asc'})
+        .exec(function(error, users){
+            if (error){
+                response.status(500).send(error);
+            } else {
+                response.status(200).send(users);
+            }
+            response.end();        
+        });
 };
 
 /** Gets a single user */
