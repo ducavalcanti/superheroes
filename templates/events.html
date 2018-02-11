@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Super Hero Catalogue - Audit Events</title>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+            socket.on('auditEvent', function(msg){
+                $('#events').append($('<li>').text('New Audit Event: ' + JSON.stringify(msg)));
+            });
+        </script>
+    </head>
+    <body> 
+        <ul id="events"></ul>
+    </body>
+</html>

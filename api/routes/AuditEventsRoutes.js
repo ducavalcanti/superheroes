@@ -1,10 +1,10 @@
 /**
  * Routes for Audit Events endpoints
  */
-var ac = require('../../aaa/AuthorizationMiddleware');
+var authorization = require('../../aaa/AuthorizationMiddleware');
 
-module.exports = function(router, authorize){
+module.exports = function(router){
     var aeController = require('../controllers/AuditEventsController');
 
-    router.post('/subscribe', ac('read'), aeController.eventStream);
+    router.get('/subscribe', aeController.eventStream);
 };

@@ -2,8 +2,8 @@ var jwt = require('jsonwebtoken');
 var config = require('../config');
 
 /** Middleware used to validate if an access token is valid */
-function validateToken(request, response, next) {
-    if (!(request.path == '/setup')){
+module.exports = function(){
+    return function validateToken(request, response, next) {
         var token = request.headers['x-access-token'];
     
         if (!token) {
@@ -21,10 +21,5 @@ function validateToken(request, response, next) {
                 next();    
             }
         });
-    } else {
-        next();
-    }
-    
+    }        
 }
-
-module.exports = validateToken;

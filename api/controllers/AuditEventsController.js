@@ -29,7 +29,6 @@ exports.createEvent = function(request, entityType, entityId, action){
 
 /** Function used to register clients and notify them of new audit events */
 exports.eventStream = function(request, response){
-    AuditEvent.schema.on('newEvent',function(event){
-        response.push(event);
-    });
+    var path = require('path');
+    response.sendFile(path.resolve(__dirname + '/../../templates/events.html'));
 }

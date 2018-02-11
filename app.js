@@ -33,7 +33,6 @@ function setupRoutes(){
     var auditRoutes = require('./api/routes/AuditEventsRoutes');
 
     authRoutes(routes);
-    routes.use(tokenValidator);
     userRoutes(routes);
     heroRoutes(routes);
     powerRoutes(routes);
